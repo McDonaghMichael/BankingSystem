@@ -37,8 +37,7 @@ public class GlobalMenuPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				GlobalSettingsPage globalSettingsPage = new GlobalSettingsPage();
-				globalSettingsPage.call();
+				GlobalSettingsPage.call();
 			}
 			
 		});
@@ -50,8 +49,7 @@ public class GlobalMenuPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				AuthenticationPage authPage = new AuthenticationPage();
-				authPage.call();
+				AuthenticationPage.call();
 			}
 			
 		});

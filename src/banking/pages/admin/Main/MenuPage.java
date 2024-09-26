@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import banking.pages.admin.Accounts.AccountsPage;
+import banking.pages.admin.settings.AdminSettingsPage;
 import banking.pages.authentication.AuthenticationPage;
 
 public class MenuPage {
@@ -41,6 +42,16 @@ public class MenuPage {
 		
 		JButton settingsBtn = new JButton("Settings");
 		settingsBtn.setPreferredSize(new Dimension(100,30));
+		
+		settingsBtn.addActionListener(new ActionListener() {
+			@Override
+            public void actionPerformed(ActionEvent e) {
+                
+                AdminSettingsPage.call();
+                frame.dispose();
+            }
+		});
+		
 		
 		JButton logoutBtn = new JButton("Logout");
 		logoutBtn.setPreferredSize(new Dimension(100,30));

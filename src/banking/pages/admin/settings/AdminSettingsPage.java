@@ -1,4 +1,4 @@
-package banking.pages.global.settings;
+package banking.pages.admin.settings;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -9,15 +9,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import banking.pages.authentication.AuthenticationPage;
-import banking.pages.global.GlobalMenuPage;
+import banking.pages.admin.Main.MenuPage;
 
-public class GlobalSettingsPage {
+public class AdminSettingsPage {
 	
-	public GlobalSettingsPage() {
+	public AdminSettingsPage() {
 		
 	}
-	
+
 	public static void call() {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		
@@ -35,7 +34,7 @@ public class GlobalSettingsPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				GlobalMenuPage.call();
+				MenuPage.call();
 			}
 			
 		});
