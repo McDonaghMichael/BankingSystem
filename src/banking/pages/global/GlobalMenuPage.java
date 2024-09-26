@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import banking.pages.admin.Accounts.AccountsPage;
 import banking.pages.authentication.AuthenticationPage;
+import banking.pages.global.settings.GlobalSettingsPage;
 
 public class GlobalMenuPage {
 	
@@ -31,6 +32,16 @@ public class GlobalMenuPage {
 		
 		JButton settingsBtn = new JButton("Settings");
 		settingsBtn.setPreferredSize(new Dimension(100,30));
+		settingsBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+				GlobalSettingsPage globalSettingsPage = new GlobalSettingsPage();
+				globalSettingsPage.call();
+			}
+			
+		});
 		
 		JButton logoutBtn = new JButton("Logout");
 		logoutBtn.setPreferredSize(new Dimension(100,30));
