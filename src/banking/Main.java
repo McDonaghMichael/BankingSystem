@@ -1,6 +1,7 @@
 package banking;
 
-import banking.pages.Main.MenuPage;  
+import banking.pages.Main.MenuPage;
+import banking.pages.authentication.AuthenticationPage;  
 
 public class Main {
 	
@@ -8,8 +9,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		MenuPage mP = new MenuPage();
-		mP.call();
+		AuthenticationPage authPage = new AuthenticationPage();
+		authPage.call();
 		
 	}
 	
