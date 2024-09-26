@@ -1,4 +1,4 @@
-package banking.pages.Accounts;
+package banking.pages.admin.Accounts;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;

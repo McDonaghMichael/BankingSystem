@@ -13,7 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import banking.pages.Main.MenuPage;
+import banking.pages.admin.Main.MenuPage;
+import banking.pages.global.GlobalMenuPage;
 
 public class AuthenticationPage {
 	
@@ -62,6 +63,10 @@ public class AuthenticationPage {
 				if(username.equals("admin") && password.equals("pass")) {
 					MenuPage menuPage = new MenuPage();
 					menuPage.call();
+					frame.dispose();
+				}else if(username.equals("user") && password.equals("pass")) {
+					GlobalMenuPage globalMenuPage = new GlobalMenuPage();
+					globalMenuPage.call();
 					frame.dispose();
 				}else if(username.isBlank() && !password.isBlank()) {
 					JOptionPane.showMessageDialog(frame, "Username field cannot be blank");

@@ -1,6 +1,6 @@
 package banking;
 
-import banking.pages.Main.MenuPage;
+import banking.pages.admin.Main.MenuPage;
 import banking.pages.authentication.AuthenticationPage;  
 
 public class Main {
