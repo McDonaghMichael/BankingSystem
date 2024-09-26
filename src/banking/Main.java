@@ -1,5 +1,6 @@
 package banking;
 
+import banking.data.db.Database;
 import banking.pages.admin.Main.MenuPage;
 import banking.pages.authentication.AuthenticationPage;  
 
@@ -11,6 +12,10 @@ public class Main {
 
 		AuthenticationPage authPage = new AuthenticationPage();
 		authPage.call();
+
+		Database db = new Database();
+
+
 		
 	}
 	
