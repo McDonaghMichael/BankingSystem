@@ -34,8 +34,7 @@ public class MenuPage {
 		accountsBtn.addActionListener(new ActionListener() {
 			@Override
             public void actionPerformed(ActionEvent e) {
-                AccountsPage accountsPage = new AccountsPage();
-                accountsPage.call();
+                AccountsPage.call();
                 frame.dispose();
             }
 		});
@@ -60,8 +59,7 @@ public class MenuPage {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
-				AuthenticationPage authPage = new AuthenticationPage();
-				authPage.call();
+				AuthenticationPage.call();
 			}
 			
 		});
