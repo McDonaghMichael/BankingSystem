@@ -2,15 +2,12 @@ package banking.data.db;
 
 import javax.xml.crypto.Data;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 
 public class Database {
 
-    final static String DATABASE_NAME = "banking.db";
+    public final static String DATABASE_NAME = "banking.db";
 
     public Database() {
         createNewDatabase();
@@ -39,16 +36,36 @@ public class Database {
     public static void createNewTable() {
         String url = "jdbc:sqlite:" + DATABASE_NAME;
 
-        String sql = "CREATE TABLE IF NOT EXISTS users (\n"
-                + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " name TEXT NOT NULL,\n"
-                + " email TEXT NOT NULL UNIQUE\n"
+        String sql = "CREATE TABLE IF NOT EXISTS accounts (\n"
+                + " accountId INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+                + " firstName TEXT NOT NULL,\n"
+                + " lastName TEXT NOT NULL,\n"
+                + " username TEXT NOT NULL UNIQUE,\n"
+                + " password TEXT NOT NULL\n"
                 + ");";
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
             System.out.println("Table has been created.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void insertAccount(String firstName, String lastName, String username, String password) {
+        String url = "jdbc:sqlite:" + DATABASE_NAME;
+        String sql = "INSERT INTO accounts (firstName, lastName, username, password) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, username);
+            pstmt.setString(4, password);
+
+            pstmt.executeUpdate();
+            System.out.println("Account inserted successfully.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

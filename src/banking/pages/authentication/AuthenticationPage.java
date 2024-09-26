@@ -5,14 +5,11 @@ import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
+import banking.data.db.Database;
 import banking.pages.admin.Main.MenuPage;
 import banking.pages.global.GlobalMenuPage;
 
@@ -60,7 +57,7 @@ public class AuthenticationPage {
 				String username = usernameField.getText();
 				String password = passwordField.getText();
 				
-				if(username.equals("admin") && password.equals("pass")) {
+				if(validateDetails(username, password)) {
 					MenuPage menuPage = new MenuPage();
 					menuPage.call();
 					frame.dispose();
@@ -81,5 +78,28 @@ public class AuthenticationPage {
 		});
 		
 	}
+
+	private static boolean validateDetails(String user, String pass) {
+		String url = "jdbc:sqlite:" + Database.DATABASE_NAME;
+		String sql = "SELECT username, password FROM accounts WHERE username = ?";
+
+		try (Connection conn = DriverManager.getConnection(url);
+			 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, user);
+
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					String username = rs.getString("username");
+					String password = rs.getString("password");
+					return username.equals(user) && password.equals(pass);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
+
 
 }
