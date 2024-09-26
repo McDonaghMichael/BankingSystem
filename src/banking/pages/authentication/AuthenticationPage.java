@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import banking.pages.Main.MenuPage;
@@ -36,7 +38,7 @@ public class AuthenticationPage {
 		usernameField.requestFocusInWindow();
 		usernameField.setPreferredSize(new Dimension(100,25));
 		
-		JTextField passwordField = new JTextField();
+		JPasswordField passwordField = new JPasswordField();
 		passwordField.setToolTipText("Enter your password here");
 		passwordField.setPreferredSize(new Dimension(100,25));
 		
@@ -57,12 +59,19 @@ public class AuthenticationPage {
 				String username = usernameField.getText();
 				String password = passwordField.getText();
 				
-				if(username.equals("admin") && password.equals("admin")) {
+				if(username.equals("admin") && password.equals("pass")) {
 					MenuPage menuPage = new MenuPage();
 					menuPage.call();
 					frame.dispose();
+				}else if(username.isBlank() && !password.isBlank()) {
+					JOptionPane.showMessageDialog(frame, "Username field cannot be blank");
+				}else if(password.isBlank() && !username.isBlank()) {
+					JOptionPane.showMessageDialog(frame, "Password field cannot be blank");
+				}else if(username.isBlank() && password.isBlank()) {
+					JOptionPane.showMessageDialog(frame, "Username and Password field cannot be blank");
+				}else {
+					JOptionPane.showMessageDialog(frame, "Incorrect username and/or password detected.");
 				}
-				
 			}
 		});
 		
