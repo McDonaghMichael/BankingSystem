@@ -35,14 +35,14 @@ public class AccountsPage {
 		panel.add(new JLabel("First Name"));
 		panel.add(new JLabel("Last Name"));
 		panel.add(new JLabel("Username"));
-		panel.add(new JLabel("Password"));
-		panel.add(new JLabel("Balance"));
+		panel.add(new JLabel(" "));
+		panel.add(new JLabel(" "));
 
 		fetchAndDisplayAccounts(panel);
 
 
 		JPanel btnPanel = new JPanel();
-		btnPanel.setLayout(new GridLayout(0, 6));
+		btnPanel.setLayout(new GridLayout(0, 7));
 
 		JTextField username = new JTextField();
 		JTextField password = new JPasswordField();
@@ -54,59 +54,7 @@ public class AccountsPage {
 		JButton createAccountBtn = new JButton("Create Account");
 		createAccountBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-
-
-
-					Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-					JFrame frame = new JFrame();
-					frame.setTitle("Account Creation");
-					frame.setSize(dimension.width / 4, dimension.height / 4);
-					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-					frame.setLayout(new FlowLayout());
-
-					JPanel accountCreationPanel = new JPanel(new GridLayout(6,1));
-
-					JLabel firstNameLabel = new JLabel("First Name");
-					JLabel lastNameLabel = new JLabel("Last Name");
-					JLabel usernameLabel = new JLabel("Username:");
-					JLabel passwordLabel = new JLabel("Password:");
-					JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-
-					JTextField firstNameInput = new JTextField(10);
-					JTextField lastnameInput = new JTextField(10);
-					JTextField usernameInput = new JTextField(10);
-					JTextField passwordInput = new JTextField(10);
-					JTextField confirmPasswordInput = new JTextField(10);
-
-					JButton createAccountBtn = new JButton("Create Account");
-
-					accountCreationPanel.add(firstNameLabel);
-					accountCreationPanel.add(firstNameInput);
-					accountCreationPanel.add(lastNameLabel);
-					accountCreationPanel.add(lastnameInput);
-					accountCreationPanel.add(usernameLabel);
-					accountCreationPanel.add(usernameInput);
-					accountCreationPanel.add(passwordLabel);
-					accountCreationPanel.add(passwordInput);
-					accountCreationPanel.add(confirmPasswordLabel);
-					accountCreationPanel.add(confirmPasswordInput);
-					accountCreationPanel.add(createAccountBtn);
-
-					createAccountBtn.addActionListener(new ActionListener() {
-						public void actionPerformed(ActionEvent e) {
-							if(!passwordInput.getText().equals(confirmPasswordInput.getText())) {
-
-
-							}else{
-								Database.insertAccount(firstNameInput.getText(), lastnameInput.getText(), usernameInput.getText(), passwordInput.getText());
-
-							}
-						}
-					});
-					frame.add(accountCreationPanel);
-					frame.setVisible(true);
-
+				loadAccountCreateMenu();
 
 			}
 		});
@@ -114,6 +62,77 @@ public class AccountsPage {
 		btnPanel.add(createAccountBtn);
 		frame.add(panel);
 		frame.add(btnPanel);
+		frame.setVisible(true);
+	}
+
+	private static void loadAccountCreateMenu(){
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		JFrame frame = new JFrame();
+		frame.setTitle("Account Creation");
+		frame.setSize(dimension.width / 4, dimension.height / 4);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setLayout(new FlowLayout());
+
+		JPanel accountCreationPanel = new JPanel(new GridLayout(6,1));
+
+		JLabel firstNameLabel = new JLabel("First Name");
+		JLabel lastNameLabel = new JLabel("Last Name");
+		JLabel usernameLabel = new JLabel("Username:");
+		JLabel passwordLabel = new JLabel("Password:");
+		JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
+
+		JTextField firstNameInput = new JTextField(10);
+		JTextField lastnameInput = new JTextField(10);
+		JTextField usernameInput = new JTextField(10);
+		JTextField passwordInput = new JTextField(10);
+		JTextField confirmPasswordInput = new JTextField(10);
+
+		JButton createAccountBtn = new JButton("Create Account");
+
+		accountCreationPanel.add(firstNameLabel);
+		accountCreationPanel.add(firstNameInput);
+		accountCreationPanel.add(lastNameLabel);
+		accountCreationPanel.add(lastnameInput);
+		accountCreationPanel.add(usernameLabel);
+		accountCreationPanel.add(usernameInput);
+		accountCreationPanel.add(passwordLabel);
+		accountCreationPanel.add(passwordInput);
+		accountCreationPanel.add(confirmPasswordLabel);
+		accountCreationPanel.add(confirmPasswordInput);
+		accountCreationPanel.add(createAccountBtn);
+
+		createAccountBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!passwordInput.getText().equals(confirmPasswordInput.getText())) {
+
+				}else{
+					Database.insertAccount(firstNameInput.getText(), lastnameInput.getText(), usernameInput.getText(), passwordInput.getText());
+
+				}
+			}
+		});
+		frame.add(accountCreationPanel);
+		frame.setVisible(true);
+	}
+	private static void loadAccountDataView(String firstName, String lastName, String username, String password) {
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		JFrame frame = new JFrame();
+		frame.setTitle("Account View");
+		frame.setSize(dimension.width / 4, dimension.height / 4);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setLayout(new FlowLayout());
+
+		JPanel accountViewPanel = new JPanel(new GridLayout(6,1));
+
+		JLabel firstNameLabel = new JLabel("First Name: " + firstName);
+		JLabel lastNameLabel = new JLabel("Last Name: " + lastName);
+		JLabel usernameLabel = new JLabel("Username: " + username);
+		JLabel passwordLabel = new JLabel("Password: " + password);
+		accountViewPanel.add(firstNameLabel);
+		accountViewPanel.add(lastNameLabel);
+		accountViewPanel.add(usernameLabel);
+		accountViewPanel.add(passwordLabel);
+		frame.add(accountViewPanel);
 		frame.setVisible(true);
 	}
 
@@ -139,8 +158,15 @@ public class AccountsPage {
 				panel.add(new JLabel(firstName));
 				panel.add(new JLabel(lastName));
 				panel.add(new JLabel(username));
-				panel.add(new JLabel(password));
-				panel.add(new JLabel(String.valueOf(balance)));
+				panel.add(new JButton("Edit"));
+
+				JButton viewBtn = new JButton("View");
+				viewBtn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						loadAccountDataView(firstName, lastName, username, password);
+					}
+				});
+				panel.add(viewBtn);
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
