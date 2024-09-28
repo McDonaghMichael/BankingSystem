@@ -1,6 +1,7 @@
 package banking.pages.admin.Accounts;
 
 import banking.data.db.Database;
+import banking.data.types.User;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -40,22 +41,13 @@ public class AccountsPage {
 
 		fetchAndDisplayAccounts(panel);
 
-
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new GridLayout(0, 7));
-
-		JTextField username = new JTextField();
-		JTextField password = new JPasswordField();
-		Object[] message = {
-				"Username:", username,
-				"Password:", password
-		};
 
 		JButton createAccountBtn = new JButton("Create Account");
 		createAccountBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadAccountCreateMenu();
-
 			}
 		});
 
@@ -114,7 +106,8 @@ public class AccountsPage {
 		frame.add(accountCreationPanel);
 		frame.setVisible(true);
 	}
-	private static void loadAccountDataView(String firstName, String lastName, String username, String password) {
+
+	private static void loadAccountDataView(User userAccount) {
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		JFrame frame = new JFrame();
 		frame.setTitle("Account View");
@@ -124,14 +117,16 @@ public class AccountsPage {
 
 		JPanel accountViewPanel = new JPanel(new GridLayout(6,1));
 
-		JLabel firstNameLabel = new JLabel("First Name: " + firstName);
-		JLabel lastNameLabel = new JLabel("Last Name: " + lastName);
-		JLabel usernameLabel = new JLabel("Username: " + username);
-		JLabel passwordLabel = new JLabel("Password: " + password);
+		JLabel firstNameLabel = new JLabel("First Name: " + userAccount.getFirstName());
+		JLabel lastNameLabel = new JLabel("Last Name: " + userAccount.getLastName());
+		JLabel usernameLabel = new JLabel("Username: " + userAccount.getUsername());
+		JLabel passwordLabel = new JLabel("Password: " + userAccount.getPassword());
+		JLabel balanceLabel = new JLabel("Balance: " + userAccount.getBalance());
 		accountViewPanel.add(firstNameLabel);
 		accountViewPanel.add(lastNameLabel);
 		accountViewPanel.add(usernameLabel);
 		accountViewPanel.add(passwordLabel);
+		accountViewPanel.add(balanceLabel);
 		frame.add(accountViewPanel);
 		frame.setVisible(true);
 	}
@@ -148,22 +143,18 @@ public class AccountsPage {
 
 			while (rs.next()) {
 				int accountId = rs.getInt("accountId");
-				String firstName = rs.getString("firstName");
-				String lastName = rs.getString("lastName");
-				String username = rs.getString("username");
-				String password = rs.getString("password");
-				int balance = rs.getInt("balance");
+				User userAccount = Database.getUserById(accountId);
 
 				panel.add(new JLabel(String.valueOf(accountId)));
-				panel.add(new JLabel(firstName));
-				panel.add(new JLabel(lastName));
-				panel.add(new JLabel(username));
+				panel.add(new JLabel(userAccount.getFirstName()));
+				panel.add(new JLabel(userAccount.getLastName()));
+				panel.add(new JLabel(userAccount.getUsername()));
 				panel.add(new JButton("Edit"));
 
 				JButton viewBtn = new JButton("View");
 				viewBtn.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						loadAccountDataView(firstName, lastName, username, password);
+						loadAccountDataView(userAccount);
 					}
 				});
 				panel.add(viewBtn);

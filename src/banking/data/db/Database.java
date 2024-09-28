@@ -1,6 +1,11 @@
 package banking.data.db;
 
+import banking.data.types.User;
+
+import javax.swing.*;
 import javax.xml.crypto.Data;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.*;
 
@@ -62,19 +67,62 @@ public class Database {
 
     public static void insertAccount(String firstName, String lastName, String username, String password) {
         String url = "jdbc:sqlite:" + DATABASE_NAME;
-        String sql = "INSERT INTO accounts (firstName, lastName, username, password) VALUES (?, ?, ?, ?)";
+        String sqlAccount = "INSERT INTO accounts (firstName, lastName, username, password) VALUES (?, ?, ?, ?)";
+        String sqlUser = "INSERT INTO users (accountId, balance) VALUES (?, 0)";
 
         try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, username);
-            pstmt.setString(4, password);
+             PreparedStatement pstmtAccount = conn.prepareStatement(sqlAccount, Statement.RETURN_GENERATED_KEYS)) {
 
-            pstmt.executeUpdate();
-            System.out.println("Account inserted successfully.");
+            pstmtAccount.setString(1, firstName);
+            pstmtAccount.setString(2, lastName);
+            pstmtAccount.setString(3, username);
+            pstmtAccount.setString(4, password);
+            pstmtAccount.executeUpdate();
+
+            try (ResultSet generatedKeys = pstmtAccount.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    long accountId = generatedKeys.getLong(1);
+                    try (PreparedStatement pstmtUser = conn.prepareStatement(sqlUser)) {
+                        pstmtUser.setLong(1, accountId);
+                        pstmtUser.executeUpdate();
+                    }
+                } else {
+                    throw new SQLException("Creating account failed, no ID obtained.");
+                }
+            }
+
+            System.out.println("Account and user inserted successfully.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+
+    public static User getUserById(int id){
+        String url = "jdbc:sqlite:" + Database.DATABASE_NAME;
+        String sql = "SELECT a.accountId, a.firstName, a.lastName, a.username, a.password, u.balance " +
+                "FROM accounts a " +
+                "LEFT JOIN users u ON a.accountId = u.accountId";
+
+        try (Connection conn = DriverManager.getConnection(url);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int accountId = rs.getInt("accountId");
+                if(accountId == id){
+                    String firstName = rs.getString("firstName");
+                    String lastName = rs.getString("lastName");
+                    String username = rs.getString("username");
+                    String password = rs.getString("password");
+                    int balance = rs.getInt("balance");
+
+                    return new User(accountId,firstName,lastName,username,password,"d","d", balance);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

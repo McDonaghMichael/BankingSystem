@@ -1,6 +1,7 @@
 package banking.data.types;
 
 public class Account {
+
 	
 	private int accountId;
 	
