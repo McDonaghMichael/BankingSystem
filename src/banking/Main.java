@@ -14,8 +14,6 @@ public class Main {
 		authPage.call();
 
 		Database db = new Database();
-
-
 		
 	}
 	

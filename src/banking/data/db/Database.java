@@ -11,7 +11,20 @@ public class Database {
 
     public Database() {
         createNewDatabase();
-        createNewTable();
+        createNewTable("CREATE TABLE IF NOT EXISTS accounts (\n"
+                + " accountId INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+                + " firstName TEXT NOT NULL,\n"
+                + " lastName TEXT NOT NULL,\n"
+                + " username TEXT NOT NULL UNIQUE,\n"
+                + " password TEXT NOT NULL\n"
+                + ");");
+
+        createNewTable("CREATE TABLE IF NOT EXISTS users (\n"
+                + " accountId INTEGER,\n"
+                + " balance INT NOT NULL,\n"
+                + " FOREIGN KEY (accountId) REFERENCES accounts(accountId) ON DELETE CASCADE\n"
+                + ");");
+
     }
 
     public static void createNewDatabase() {
@@ -33,16 +46,10 @@ public class Database {
         }
     }
 
-    public static void createNewTable() {
+    public static void createNewTable(String sqltxt) {
         String url = "jdbc:sqlite:" + DATABASE_NAME;
 
-        String sql = "CREATE TABLE IF NOT EXISTS accounts (\n"
-                + " accountId INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-                + " firstName TEXT NOT NULL,\n"
-                + " lastName TEXT NOT NULL,\n"
-                + " username TEXT NOT NULL UNIQUE,\n"
-                + " password TEXT NOT NULL\n"
-                + ");";
+        String sql = sqltxt;
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
